@@ -1,0 +1,19 @@
+GRUPO 3: Jose Escanilla, Felipe Gomez, Jacob Aranguiz
+ZONA		DISPOSITIVO	INTERFAZ	IP		MASCARA		DESTINO		CAPA JERERQUICA 	PROTOCOLOS DE RED	                                              SERVICIOS DE RED
+INTERNET	ISP		E0/1		8.8.8.9		  /24		INTERNET	Distribucion		OSPf,RIPv2,BGP,EIGRP,MPLS VPN,DHCP,IP,ICMP,HTTP,DNS,FTP,IMAP     RDP,E-MAIL,TELNET,SSH,SMTP,TFTP,FTP,POP3,HTTP
+				E0/2		200.0.0.0	  /30		ROUTER 12	Distribucion	        
+				E0/0		201.0.0.0	  /30		ROUTER 13	Distribucion            
+
+INTERNET    	ROUTER 12	E0/2		200.0.0.3	  /30		ISP		Distribucion            
+				E0/0		172.16.102.0	  /24		ROUTER 10	Distribucion            
+				E0/1		172.16.106.0	  /24		ROUTER 13	Distribucion            
+
+INTERNET	ROUTER 10	E0/0		172.16.106.13	  /24		ROUTER 12 	Distribucion            
+
+INTERNET	ROUTER 13	E0/0		201.0.0.3	  /30		ISP		Distribucion            
+				E0/1		172.16.106.13	  /24		ROUTER 12       Distribucion
+				E0/9		172.16.103.0	  /24		ROUTER 11	Distribucion
+
+INTERNET	ROUTER 11	E0/9		176.16.103.14	  /24		ROUTER 13	Distribucion            
+
+INTERNET	INTERNET	E0/1		8.8.8.0		  /24		ISP		Nucleo                  
