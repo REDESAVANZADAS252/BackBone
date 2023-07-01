@@ -2,28 +2,37 @@ import os
 import time
 import ipaddress # Para intrducior direcciones IP
 import platform
+def ficheros():
+    directory = os.getcwd()  #Carpeta donde se encuentra actualmente
+    files = os.listdir(directory)  #Obtiene todos los archivos de la carpeta
+    txt_files = [file for file in files if file.endswith('.txt')]  #filtra solos los archivos .txt
+    print(txt_files)
 
-# Función para limpiar la pantalla según el sistema operativo
 def clear_screen():
     if platform.system() == "Windows":
         os.system("cls")
     else:
-        clear_screen()
-
+        os.system("clear")
 listas = []# Crear una lista vacía para almacenar las listas de elementos
-matriz = ["ZONA","\t","DISPOSITIVO","\t","INTERFAZ","\t","VLAN","\t","IP","\t","\t","MASCARA","\t","\t","DESTINO","\t","\t","CAPA JERÁRQUICA","\t","PROTOCOLOS DE RED","\t","SERVICIOS DE RED","\n"]#encabezado de la documentacion
-listas.append(matriz)
-
-
-
+#matriz = ["ZONA","\t","DISPOSITIVO","\t","INTERFAZ","\t","IP","\t","\t","MASCARA","\t","\t","DESTINO","\t","\t","CAPA JERÁRQUICA","\t","PROTOCOLOS DE RED","\t","SERVICIOS DE RED","\n"]#encabezado de la documentacion
+#listas.append(matriz)
 
 def leer_documento_txt():
-    nombre_archivo = 'grupo_6.txt'
+    clear_screen()
     filas = [] # Lista para almacenar las filas del documento
     try:
         with open(nombre_archivo, 'r') as archivo: # Abrir el archivo en modo lectura
             contents = archivo.read() 
             print(contents)
+            while True:
+                print("Desea prolongar su sesion de lectura? (S/N)")
+                sesion = input()
+                if sesion == "s" or sesion == "S":
+                    clear_screen()
+                    print(contents)
+                    time.sleep(10)
+                elif sesion == "n" or sesion == "N":
+                    break
             for linea in archivo: # Leer cada línea del archivo
                 fila = linea.strip("\n") # Eliminar el salto de línea al final de cada línea
                 filas.append(fila) # Agregar la fila a la lista
@@ -40,36 +49,43 @@ def validador_IP(direccion_ip):
         return False
 
 def generador_lista():# Solicitar al usuario que ingrese elementos
+    clear_screen()
     while True:
         lista = []  # Crear una nueva lista vacía para cada iteración
         while True:
             i = 0
             zona = input("Ingrese nombre de la zona en que operan los dispositivos: "); i = i +1 #zona en la que trabajan los equipos
-            dispositivo = input("Ingrese dispositivo que pertenece a la zona: "); i = i +1 #nombre del dispositivo
-            interfaz = input("Ingrese la interfaz conectada:\n(SERIAL/FASTETHERNET/GIGABIT/ETHERNET)(X/X) o (X/X/X): "); i = i +1 #numero de interfaz
-            vlan = input("Ingrese el número de VLAN: ")
-            
-        
+            largo = len(zona)
+            if largo < 8:
+                zona = zona+"\t"
+            elif largo > 8:
+                zona
+            dispositivo = input("Ingrese nombre del dispositivo que pertenece a la zona: \n(ROUTER/MULTICAPA/SWITCH) (XX) [EJEMPLO: ROUTER 05] "); i = i +1
+            cadena = len(dispositivo) #nombre del dispositivo
+            if cadena < 8:
+                dispositivo = dispositivo+"\t"
+            elif cadena > 7:
+                dispositivo
+            interfaz = input("Ingrese la interfaz conectada:\n(SERIAL/FASTETH/GIGABIT/ETHER)(X/X) o (X/X/X) [POR EJEMPLO: ETHER 0/1]: "); i = i +1 #numero de interfaz
             while True:
-                direccion_ip = input("Ingrese la direccion ip de la interfaz antes mencionada: "); #direccion ip de la interfaz
+                direccion_ip = input("Ingrese la direccion ip de la interfaz: (POR EJEMPLO: 192.168.1.10) "); #direccion ip de la interfaz
                 if validador_IP(direccion_ip):
                     i = i +1
                     break
                 else:
                     print("direccion ip invalida. Favor de ingresar un direccion ip valida.")
             while True:
-                mascara = int(input("Ingrese mascara de red en la que trabaja la interfaz: \n(Ingresar solamente el prefijo de red y sin el /. Ej: 24"))#Mascara de red de la interfaz
+                mascara = int(input("Ingrese mascara de red en la que trabaja la interfaz: \n(Solo debe ingresar el prefijo de la red sin (/) EJ: 24) "))#Mascara de red de la interfaz
                 if mascara > 0 and mascara <= 32:
-                    mascara = str(mascara)
-                    i = i + 1 #Mascara de red de la interfaz 
+                    mascara = str(mascara); i = i + 1 #Mascara de red de la interfaz 
                     break
-                elif mascara <= 0 or mascara > 30:
+                elif mascara <= 0 or mascara > 32:
                     print("La mascara de red ha sido ingresada erroneamente.")
-            destino = input("Ingrese nombre del dispositvo de destino: "); i = i + 1 #destino de la interfaz o hacia donde llegará esa interfaz
-            capa_jerarquica = input("Ingrese la capa jerarquica perteneciente al equipo: \n(NUCLEO, DISTRIBUCION, ACCESO) "); i = i +1 #jerarquia perteneciente al equipo
+            destino = input("Ingrese nombre del dispositvo de destino: \n(ROUTER/MULTICAPA/SWITCH) (XX) [EJEMPLO: ROUTER 05] "); i = i + 1 #destino de la interfaz o hacia donde llegará esa interfaz
+            capa_jerarquica = input("Ingrese la capa jerarquica perteneciente al equipo \n(NUCLEO, DISTRIBUCION, ACCESO): "); i = i +1 #jerarquia perteneciente al equipo
             servicio_adheridos = input("Ingrese los servicios que estan disponibles en el dispositivo: "); i = i +1 #servicios que estan configurados en el equipo
-            protocolos_de_red = input("Ingrese los protocolos de enrutamiento del dispositivo: "); i = i +1 #protocolos de red que tiene configurado el equipo
-            lista.append(zona+"\t"+dispositivo+"\t"+interfaz+"\t"+vlan+"\t"+direccion_ip+"\t"+"/"+mascara+"\t"+"\t"+destino+"\t"+capa_jerarquica+"\t"+"\t"+protocolos_de_red+"\t"+"\t"+servicio_adheridos+"\n"); i = i +1 #se agrega las variables a una lista
+            protocolos_de_red = input("Ingrese los protocolos de enrutamiento del dispositivo: \n[POR EJEMPLO: OSPF10 ÁREA 0] "); i = i +1 #protocolos de red que tiene configurado el equipo
+            lista.append(zona+"\t"+dispositivo+"\t"+interfaz+"\t"+direccion_ip+"\t"+"/"+mascara+"\t"+"\t"+destino+"\t"+capa_jerarquica+"\t"+"\t"+protocolos_de_red+"\t"+"\t"+servicio_adheridos+"\n"); i = i +1 #se agrega las variables a una lista
             if i == 10:
                 break
         listas.append(lista)  # Agregar la lista actual a la matriz lista
@@ -78,36 +94,36 @@ def generador_lista():# Solicitar al usuario que ingrese elementos
             agregar = input("Desea agregar una nueva interfaz? (S/N) ") #se agrega interfaces adicionales del equipo en caso de tenerlas
             if agregar == "Si" or agregar == "si" or agregar == "SI" or agregar == "S" or agregar == "s":
                 zona = ""
-                dispositivo = "\t"
-                interfaz = input("Ingrese la interfaz conectada:\n(SERIAL/FASTETHERNET/GIGABIT/ETHERNET)(X/X) o (X/X/X): "); i = i +1 #numero de interfaz
-                vlan = input ("Ingrese VLAN: ")
+                dispositivo = "\t\t"
+                interfaz = input("Ingrese la interfaz conectada:\n(SERIAL/FASTETH/GIGABIT/ETHER)(X/X) o (X/X/X) [POR EJEMPLO: ETHER 0/1]: "); #numero de interfaz
                 while True:
-                    direccion_ip = input("Ingrese la direccion ip de la interfaz antes mencionada: "); #direccion ip de la interfaz
+                    direccion_ip = input("Ingrese la direccion ip de la interfaz: (POR EJEMPLO: 192.168.1.10) "); #direccion ip de la interfaz
                     if validador_IP(direccion_ip):
-                        i = i +1
                         break
                     else:
                         print("direccion ip invalida. Favor de ingresar un direccion ip valida.")
                 while True:
-                    mascara = int(input("Ingrese mascara de red en la que trabaja la interfaz: \n(Debe de ingresar la mascara de red sin /, solo el numero de mascara."))#Mascara de red de la interfaz
+                    mascara = int(input("Ingrese mascara de red en la que trabaja la interfaz: \n(Solo debe ingresar el prefijo de la red sin (/) EJ: 24) "))#Mascara de red de la interfaz
                     if mascara >= 0 and mascara <= 32:
                         mascara = str(mascara)
                         break
                     elif mascara < 0 or mascara > 32:
                         print("La mascara de red ha sido ingresada erroneamente.")
-                destino = input("Ingrese nombre del dispositvo de destino: ")
-                capa_jerarquica ="\t"
+                destino = input("Ingrese nombre del dispositvo de destino: \n(ROUTER/MULTICAPA/SWITCH) (XX) [EJEMPLO: ROUTER 05] ")
+                capa_jerarquica = input("Ingrese la capa jerarquica perteneciente al equipo \n(NUCLEO, DISTRIBUCION, ACCESO): ")
                 servicio_adheridos = "\t"
-                protocolos_de_red = "\t"
-                lista.append(zona+"\t"+dispositivo+"\t"+interfaz+"\t"+vlan+"\t"+direccion_ip+"\t"+"/"+mascara+"\t"+"\t"+destino+"\t"+capa_jerarquica+"\t"+"\t"+protocolos_de_red+"\t"+"\t"+servicio_adheridos+"\n") #agrega una lista de la interfaz configurada 
+                protocolos_de_red = input("Ingrese los protocolos de enrutamiento del dispositivo: \n[POR EJEMPLO: OSPF10 ÁREA 0] ")
+                lista.append(zona+"\t"+dispositivo+"\t"+interfaz+"\t"+direccion_ip+"\t"+"/"+mascara+"\t"+"\t"+destino+"\t"+capa_jerarquica+"\t"+"\t"+protocolos_de_red+"\t"+"\t"+servicio_adheridos+"\n") #agrega una lista de la interfaz configurada 
+                clear_screen()
             elif agregar == "N" or agregar == "n" or agregar == "no" or agregar == "NO" or agregar == "No":
                 break
         clear_screen()
         continuar = input("¿Deseas crear otra lista? (s/n): ") #creamos otra lista para otro dispositivo.
-        if continuar.lower() != "s":
+        if continuar.lower() == "N" or continuar.lower() == "n":
             break
 
 def reemplazar(nombre_archivo):
+    clear_screen()
     def leer_documento_txt(nombre_archivo):
         filas = []  # Lista para almacenar las filas del documento
         try:
@@ -153,23 +169,45 @@ def reemplazar(nombre_archivo):
                 print(f"{i+1}. {fila}")
             guardar_documento_txt(nombre_archivo, filas_actualizadas)  # Guardar el documento actualizado
 
-nombre_archivo = 'grupo_6.txt'
-                
-def menu():
-    clear_screen()
-    print("--------------MENU-------------------")
-    print("1. leer archivo grupo_6.txt")
-    print("2. Agregar al archivo grupo_6.txt")
-    print("3. Reemplazar Texto en archivo grupo_6.txt")
-    print("4. Salir.")
-    print("\n\n---------------------------------")
+def leer_y_copiar_archivo(archivo_a_copiar, archivo_a_agregar): #Funcion para Copiar el contenido de un archivo y pegar el contenido en otro archivo
+    try:
+        with open(archivo_a_copiar, 'r') as archivo:
+            contenido = archivo.read()
+        with open(archivo_a_agregar, 'a') as archivo_nuevo:
+            archivo_nuevo.write(contenido); print("Archivo copiado exitosamente.")
+    except FileNotFoundError:
+        print("El archivo de entrada no fue encontrado.")
 
-while True:
+def menu(): #Funcion MENU. Para generar un menú.
+    clear_screen()
+    print("---------------------------MENU-----------------------------")
+    print("1. Ver archivos dentro de la carpeta")
+    print("2. Leer algun archivo")
+    print("3. Agregar al archivo backbone.txt")
+    print("4. Reemplazar Texto en archivo backbone.txt")
+    print("5. Copiar y pegar el contenido de un archivo a otro archivo.")
+    print("9. Salir.")
+    print("\n\n--------------------------------------------------------")
+
+while True: #Codigo Principal
     menu()
-    opc = int(input("Ingrese la opcion que desea realizar."))
-    if opc == 1:
-        leer_documento_txt()
-    elif opc == 2:
+    opc = int(input("Ingrese la opcion que desea realizar.\t"))
+    if opc == 1: #Ver los Archivos.
+        clear_screen(); print("Los archivos dentro de la carpeta son: ")
+        ficheros()
+        while True:
+            opcion = input("Desea regresar al menú: (S/N)  ")
+            if opcion == "S" or opcion == "s":
+                clear_screen(); break
+    elif opc == 2: #Leer algun archivo.
+        clear_screen(); ficheros()
+        nombre_archivo = input("Ingrese el nombre del archivo para leer los parametros registrados: \n(Ingrese solo el nombre, no coloque la extension .txt)")
+        nombre_archivo = nombre_archivo+".txt"; leer_documento_txt()
+        clear_screen()
+    elif opc == 3: #Ingresar parametros a algun archivo.
+        ficheros()
+        nombre_archivo = input("Ingrese el nombre de archivo donde quiere que sean guardados los parametros registrados: \n(Ingrese solo el nombre, no coloque la extension .txt)")
+        nombre_archivo = nombre_archivo+".txt"
         generador_lista()
         for i, lista in enumerate(listas): # Imprimir todas las listas creadas
             print("Lista", i + 1, ":", lista)
@@ -177,7 +215,23 @@ while True:
             for fila in listas:
                 for elements in fila:
                     archivo.write(elements)
-    elif opc == 3:
-        reemplazar(nombre_archivo)
-    elif opc == 4:
-        break
+        print("Parametros guardados con exito!"); time.sleep(4)
+        clear_screen()
+    elif opc == 4: #Reemplazar algun parametro de algun archivo
+        ficheros()
+        nombre_archivo = input("Ingrese el nombre de archivo donde quiere reemplazar los parametros registrados: \n(Ingrese solo el nombre, no coloque la extension .txt)")
+        nombre_archivo = nombre_archivo+".txt"
+        while True: #Para reemplazar varios parametros en caso de ser necesario.
+            reemplazar(nombre_archivo)
+            opcion = input("Desea reemplazar algun otro parametro?: (S/N)  ")
+            if opcion == "N" or opcion == "n":
+                clear_screen(); break
+    elif opc == 5: #Copiar y pegar el contienido de un archivo a otro.
+        ficheros()
+        archivo_a_copiar = input("Ingrese el nombre del archivo del cual se desea copiar el contenido. \n(Solo nombre, sin extension) : ")+".txt"
+        archivo_a_agregar = input("Ingrese el nombre del archivo del cual se desea agregar el contenido del archivo copiado. \n(Solo nombre, sin extension) : ")+".txt"
+        leer_y_copiar_archivo(archivo_a_copiar, archivo_a_agregar)
+    elif opc == 9: #Salir del programa.
+        clear_screen(); break
+    else:
+        print("Opcion erronea.")
