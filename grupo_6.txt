@@ -1,23 +1,23 @@
 GRUPO 6: Jason Salas, Ivan Alvarez, Matias Huichaqueo.
 
 ZONA	DISPOSITIVO	INTERFAZ	VLAN	        IP		MASCARA		DESTINO		CAPA JERÁRQUICA	        PROTOCOLOS DE RED    	SERVICIOS DE RED
-ZONA 6	SWM-1	    ETHERNET 0/3        VLAN 10         192.168.10.1    /24		PC-VLAN 10	DISTRIBUCION		EIGRP AS 100	        DHCP
+ZONA 6	SWM-1	    ETHERNET 0/3        VLAN 10         192.168.10.1    /24		PC-VLAN 10	DISTRIBUCION	        EIGRP AS 100	        DHCP 
 		    ETHERNET 0/2	N/A     	192.168.105.1	/30		SWM-2								
-		    ETHERNET 0/0	N/A     	192.168.100.2	/30		R-14								
+		    ETHERNET 0/0	N/A     	192.168.100.2	/30		R-14            								
 		    ETHERNET 0/1	N/A     	192.168.101.2	/30		R-15								
-ZONA 6	SWM-2	    ETHERNET 0/0	N/A      	192.168.104.2	/30	        R-15	        DISTRIBUCION	        EIGRP AS 100	        DHCP
+ZONA 6	SWM-2	    ETHERNET 0/0	N/A      	192.168.104.2	/30	        R-15	        DISTRIBUCION	        EIGRP AS 100	         
 		    ETHERNET 0/1	N/A      	192.168.102.2	/30		R-14								
 	            ETHERNET 0/2	N/A     	192.168.105.2	/30		SWM-1								
-	            ETHERNET 0/3	VLAN 20         192.168.20.1	/24		PC-VLAN 20								
-ZONA 6  R-14        ETHERNET 0/0        N/A             192.168.100.1   /30             SWM-1                                                                             
-                    ETHERNET 0/1        N/A             192.168.102.1   /30             SWM-2 
-                    ETHERNET 0/3        N/A             192.168.103.1   /30             R-15
-                    ETHERNET 1/0        N/A             180.180.180.4   /24             R-3
-ZONA 6  R-15        ETHERNET 0/0        N/A             192.168.104.0   /30             SWM-2
-                    ETHERNET 0/1        N/A             192.168.101.1   /30             SWM-1
-                    ETHERNET 0/2        N/A             180.180.181.5   /24             R-3
-                    ETHERNET 0/3        N/A             192.168.103.2   /30             R-14
-ZONA 6  R-3         ETHERNET 0/0        N/A             10.10.23.3      /24             R-2
+	            ETHERNET 0/3	VLAN 20         192.168.20.1	/24		PC-VLAN 20							DHCP	
+ZONA 6  R-14        ETHERNET 0/0        N/A             192.168.100.1   /30             SWM-1           DISTRIBUCION            BGP 1415                                                          
+                    ETHERNET 0/1        N/A             192.168.102.1   /30             SWM-2                                                                 
+                    ETHERNET 0/3        N/A             192.168.103.1   /30             R-15                                                      
+                    ETHERNET 1/0        N/A             180.180.180.4   /24             R-3                                                               
+ZONA 6  R-15        ETHERNET 0/0        N/A             192.168.104.0   /30             SWM-2           DISTRIBUCION            BGP 1415
+                    ETHERNET 0/1        N/A             192.168.101.1   /30             SWM-1                                                            
+                    ETHERNET 0/2        N/A             180.180.181.5   /24             R-3                                                                       
+                    ETHERNET 0/3        N/A             192.168.103.2   /30             R-14                                                       
+ZONA 6  R-3         ETHERNET 0/0        N/A             10.10.23.3      /24             R-2             NUCLEO                  EIGRP AS 200
                     ETHERNET 0/1        N/A             10.10.35.3      /24             R-5
                     ETHERNET 0/2        N/A             180.180.181.3   /24             R-15
                     ETHERNET 1/0        N/A             180.180.180.3   /24             R-14
